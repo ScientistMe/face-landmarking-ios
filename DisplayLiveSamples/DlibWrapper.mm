@@ -11,6 +11,7 @@
 
 #include <dlib/image_processing.h>
 #include <dlib/image_io.h>
+#include "DlibWrapperDelegate.h"
 
 @interface DlibWrapper ()
 
@@ -18,6 +19,7 @@
 
 + (dlib::rectangle)convertScaleCGRect:(CGRect)rect toDlibRectacleWithImageSize:(CGSize)size;
 + (std::vector<dlib::rectangle>)convertCGRectValueArray:(NSArray<NSValue *> *)rects toVectorWithImageSize:(CGSize)size;
++ (CGFloat)pixelToPoints:(CGFloat)px;
 
 @end
 @implementation DlibWrapper {
@@ -95,6 +97,8 @@
     {
         dlib::rectangle oneFaceRect = convertedRectangles[j];
         
+        NSMutableArray *m = [NSMutableArray new];
+        
         // detect all landmarks
         dlib::full_object_detection shape = sp(img, oneFaceRect);
         
@@ -102,7 +106,12 @@
         for (unsigned long k = 0; k < shape.num_parts(); k++) {
             dlib::point p = shape.part(k);
             draw_solid_circle(img, p, 3, dlib::rgb_pixel(0, 255, 255));
+            
+            if (k >= 60) {
+                [m addObject: [NSValue valueWithCGPoint:CGPointMake( [DlibWrapper pixelToPoints:p.x()], [DlibWrapper pixelToPoints:p.y()]) ]];
+            }
         }
+        [_delegate mouthVerticePositions:m];
     }
     
     // lets put everything back where it belongs
@@ -145,6 +154,22 @@
         myConvertedRects.push_back(dlibRect);
     }
     return myConvertedRects;
+}
+
+// https://gist.github.com/jordiboehmelopez/3168819
++ (CGFloat)pixelToPoints:(CGFloat)px {
+    CGFloat pointsPerInch = 72.0; // see: http://en.wikipedia.org/wiki/Point%5Fsize#Current%5FDTP%5Fpoint%5Fsystem
+    CGFloat scale = 1; // We dont't use [[UIScreen mainScreen] scale] as we don't want the native pixel, we want pixels for UIFont - it does the retina scaling for us
+    float pixelPerInch; // aka dpi
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        pixelPerInch = 132 * scale;
+    } else if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        pixelPerInch = 163 * scale;
+    } else {
+        pixelPerInch = 160 * scale;
+    }
+    CGFloat result = px * pointsPerInch / pixelPerInch;
+    return result;
 }
 
 @end
