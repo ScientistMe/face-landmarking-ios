@@ -25,7 +25,8 @@ class GameScene: SKScene {
         var anchorPoint:CGPoint!
         let pathToDraw:CGMutablePathRef = CGPathCreateMutable()
         
-        let center = self.view!.convertPoint( CGPointMake( (mouth[2].x + mouth[6].x) / 2, (mouth[2].y + mouth[6].y) / 2), toScene: self)
+        var center = self.view!.convertPoint( CGPointMake( (mouth[2].x + mouth[6].x) / 2, (mouth[2].y + mouth[6].y) / 2), toScene: self)
+        center = CGPointMake(center.x+50,center.y-100)
         
         for m in mouth {
             let mm = self.view!.convertPoint(m, toScene: self)

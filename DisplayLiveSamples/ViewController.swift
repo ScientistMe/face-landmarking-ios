@@ -25,15 +25,12 @@ class ViewController: UIViewController {
         
         setupCameraLayer()
         setupGameLayer()
-//        setupExtraLayer()
 
     }
 
     func setupCameraLayer(){
         let layer = sessionHandler.layer
         layer.frame = self.view.bounds
-//        layer.setAffineTransform(CGAffineTransformMakeRotation(CGFloat(M_PI)))
-//        layer.setAffineTransform(CGAffineTransformScale(layer.affineTransform(), 1, -1))
         self.view.layer.addSublayer(layer)
         
     }
@@ -57,13 +54,6 @@ class ViewController: UIViewController {
         skView.presentScene(scene)
     }
     
-    func setupExtraLayer() {
-        self.extralayer.frame = self.view.bounds
-//        self.extralayer.setAffineTransform(CGAffineTransformMakeRotation(CGFloat(M_PI)))
-//        self.extralayer.setAffineTransform(CGAffineTransformScale(self.extralayer.affineTransform(), 1, -1))
-
-    }
-    
     func useTemporaryLayer() {
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
             self.mouth = (UIApplication.sharedApplication().delegate as! AppDelegate).mouth
@@ -80,7 +70,6 @@ class ViewController: UIViewController {
             self.shape.fillColor = UIColor.greenColor().CGColor
             
             dispatch_async(dispatch_get_main_queue()) {
-//                self.extralayer.addSublayer(self.shape)
                 self.view.layer.addSublayer(self.shape)
             }
         })
