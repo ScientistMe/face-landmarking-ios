@@ -12,10 +12,9 @@ import AVFoundation
 class ViewController: UIViewController {
     let sessionHandler = SessionHandler()
     
-    @IBOutlet weak var preview: UIView!
-    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         // Do any additional setup after loading the view, typically from a nib.
     }
 
@@ -31,9 +30,10 @@ class ViewController: UIViewController {
         
 
         let layer = sessionHandler.layer
-        layer.frame = preview.bounds
-
-        preview.layer.addSublayer(layer)
+        layer.frame = self.view.bounds
+        layer.setAffineTransform(CGAffineTransformMakeRotation(CGFloat(M_PI)))
+        layer.setAffineTransform(CGAffineTransformScale(layer.affineTransform(), 1, -1))
+        self.view.layer.addSublayer(layer)
         
         view.layoutIfNeeded()
 
