@@ -14,7 +14,7 @@ class SessionHandler : NSObject, AVCaptureVideoDataOutputSampleBufferDelegate, A
     let sampleQueue = dispatch_queue_create("com.zweigraf.DisplayLiveSamples.sampleQueue", DISPATCH_QUEUE_SERIAL)
     let faceQueue = dispatch_queue_create("com.zweigraf.DisplayLiveSamples.faceQueue", DISPATCH_QUEUE_SERIAL)
     let wrapper = DlibWrapper()
-    
+    let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
     var currentMetadata: [AnyObject]
     
     override init() {
@@ -91,6 +91,9 @@ class SessionHandler : NSObject, AVCaptureVideoDataOutputSampleBufferDelegate, A
     
     func mouthVerticePositions(vertices: NSMutableArray!) {
         //parse new mouth location and shape from nsmutable array vertices
-        (UIApplication.sharedApplication().delegate as! AppDelegate).mouth = vertices.map({$0.CGPointValue()})
+        appDelegate.mouth = vertices.map({$0.CGPointValue()})
+
+        //testing coordinates from dlib before i pass to gamescene; should be the same as gamescene sprite but more laggy
+        (appDelegate.window?.rootViewController as! ViewController).useTemporaryLayer()
     }
 }

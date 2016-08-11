@@ -15,14 +15,13 @@ class GameScene: SKScene {
     override func update(currentTime: CFTimeInterval) {
         let mouth = (UIApplication.sharedApplication().delegate as! AppDelegate).mouth
         if !mouth.isEmpty && mouth.first!.x != 0 && mouth.first!.y != 0 {
-            //        create player position and draw shape based on mouth array
+//        create player position and draw shape based on mouth array
             if polygonNode != nil { polygonNode.removeFromParent() }
             addMouth(mouth)
         }
     }
     
     func addMouth(mouth:[CGPoint]) {
-        print(mouth)
         var anchorPoint:CGPoint!
         let pathToDraw:CGMutablePathRef = CGPathCreateMutable()
         
