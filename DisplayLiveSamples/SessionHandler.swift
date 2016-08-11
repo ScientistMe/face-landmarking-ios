@@ -94,6 +94,6 @@ class SessionHandler : NSObject, AVCaptureVideoDataOutputSampleBufferDelegate, A
         appDelegate.mouth = vertices.map({$0.CGPointValue()})
 
         //testing coordinates from dlib before i pass to gamescene; should be the same as gamescene sprite but more laggy
-        (appDelegate.window?.rootViewController as! ViewController).useTemporaryLayer()
+//        (appDelegate.window?.rootViewController as! ViewController).useTemporaryLayer()
     }
 }
